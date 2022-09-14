@@ -1,0 +1,116 @@
+<template>
+  <div class="q-pa-md">
+    <q-table
+      title="People"
+      :data="data"
+      :columns="colunas"
+      :loading="loading"
+      row-key="_id"
+      rowsPerPage="15"
+      color="primary"
+    >
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn
+            dense
+            round
+            flat
+            color="warning"
+            @click="editar(props)"
+            icon="edit"
+          >
+            <q-tooltip
+              anchor="top middle"
+              self="bottom middle"
+              :offset="[10, 10]"
+            >
+              <strong>Editar</strong>
+            </q-tooltip>
+          </q-btn>
+          <q-btn
+            dense
+            round
+            flat
+            color="red"
+            @click="excluir(props)"
+            icon="delete"
+          >
+            <q-tooltip
+              anchor="top middle"
+              self="bottom middle"
+              :offset="[10, 10]"
+            >
+              <strong>Excluir</strong>
+            </q-tooltip>
+          </q-btn>
+        </q-td>
+      </template>
+    </q-table>
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn fab icon="add" color="positive" @click="novaPersona">
+        <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
+          <strong>Adicionar</strong>
+        </q-tooltip>
+      </q-btn>
+    </q-page-sticky>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import { PersonaService } from "../../services/PersonaService";
+@Component
+export default class PersonaList extends Vue {
+  data: any[] = [];
+  loading: boolean = true;
+
+  private _personaService!: PersonaService;
+
+  colunas: Array<object> = [
+    {
+      field: row => row._id,
+      label: "Nome",
+      nome: "persona.nome",
+      align: "left",
+      
+    },
+    { name: "actions", label: "", field: "", align: "center" },
+  ];
+
+  recuperaConteudos() {
+    this.loading = true;
+    this._personaService
+      .listar()
+      .then((result) => {
+        this.loading = false;
+        this.data = result;
+        console.log(result);
+        console.log(result[0].persona.nome);
+      })
+      .catch()
+      .finally();
+  }
+
+  created() {
+    this._personaService = new PersonaService();
+    this.recuperaConteudos();
+  }
+
+  editar(row: any) {
+    console.log(row.row.id);
+    this.$router.push({
+      path: `personaEdit/${row.row._id}`,
+    });
+  }
+
+  excluir(row: any) {
+    console.log(row);
+  }
+
+  novaPersona() {
+    this.$router.push({
+      path: `personaCreate`,
+    });
+  }
+}
+</script>
