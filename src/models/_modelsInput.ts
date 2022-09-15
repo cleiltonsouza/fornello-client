@@ -1,34 +1,24 @@
-export namespace _modelsInput{
+export namespace _modelsInput {
+  export interface Mapeamento {
+    templateId: string | null;
+    template: any | null;
+    mapeamentoItens: MapeamentoItem[] | null;
+  }
+  export interface MapeamentoItem {
+    mapeamentoItemId: number | null;
+    pathTemplate: string | null;
+    pathPersona: string | null;
+  }
 
-    export interface PessoaLogin{
+  export interface Caso {
+    descricaoCaso: string | null;
+    mapeamentoId: string | null;
+    mapeamentoTemplatePersonaCasoItens: MapeamentoTemplatePersonaCasoItens[] | null;
+  }
 
-        txtEmail: string | null,
-        txtSenha:string| null,
-    }
-
-    export interface PessoaAdicionar{
-        nmePessoa : string | null,
-        txtEmail: string | null,
-        txtSenha:string| null,
-    }
-
-    export interface Conteudo{
-        idConteudo: number | null, 
-        nmeConteudo: string | null
-    }
-
-    export interface Cartao{
-        idConteudo: number , 
-        idCartao: number | null, 
-        txtPergunta:string| null, 
-        txtResposta:string | null
-    }
-
-    export interface Avaliacao{
-        idCartao : number| null, 
-        idTipoAvaliacao : number| null, 
-        txtPergunta : string  | null,
-        txtResposta : string | null        
-    }
+  export interface MapeamentoTemplatePersonaCasoItens{
+    mapeamentoId : string | null, 
+    mapeamentoItem : any | null, 
+    value : any
+  }
 }
- 
