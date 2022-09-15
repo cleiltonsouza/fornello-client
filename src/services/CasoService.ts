@@ -3,16 +3,16 @@ import { HttpClient } from "./HttpClientService";
 import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestParameters";
 import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel"
-export class PersonaService {
+export class CasoService {
 
 
-    public async adicionar(persona: any) {
+    public async adicionar(caso: any) {
         let parameters: IHttpClientRequestParameters
             = {
-                url: "http://localhost:3000/persona",
+                url: "http://localhost:3000/caso",
 
             requiresToken: false,
-            payload: persona
+            payload: caso
         }
         try {
             let result = await HttpClient.post(parameters);
@@ -27,7 +27,7 @@ export class PersonaService {
     public async listar() {
         let parameters: IHttpClientRequestParameters
             = {
-            url: "http://localhost:3000/persona",
+            url: "http://localhost:3000/caso",
             requiresToken: false
         }
         try {
@@ -39,14 +39,14 @@ export class PersonaService {
         }
     }
 
-    public async atualizar(personaId:string, persona: any) {
+    public async atualizar(casoId:string, caso: any) {
         let parameters: IHttpClientRequestParameters
             = {
-              url: `http://localhost:3000/persona/${personaId}`,
+              url: `http://localhost:3000/caso/${casoId}`,
 
 
             requiresToken: true,
-            payload: persona
+            payload: caso
         }
         try {
             let result = await HttpClient.put(parameters);
@@ -58,12 +58,12 @@ export class PersonaService {
         }
     }
 
-    public async recuperaPorId(personaId : string){
+    public async recuperaPorId(casoId : string){
 
 
         let parameters: IHttpClientRequestParameters
             = {
-                url: `http://localhost:3000/persona/${personaId}`,
+                url: `http://localhost:3000/caso/${casoId}`,
             requiresToken: true
         }
         try {

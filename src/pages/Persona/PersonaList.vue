@@ -1,4 +1,11 @@
 <template>
+  <div>
+    <div class="q-pa-md q-gutter-sm">
+    <q-breadcrumbs>
+      <q-breadcrumbs-el label="Home" />
+      <q-breadcrumbs-el label="Persona" />
+    </q-breadcrumbs>
+    </div>
   <div class="q-pa-md">
     <q-table
       title="People"
@@ -53,6 +60,7 @@
         </q-tooltip>
       </q-btn>
     </q-page-sticky>
+  </div>
   </div>
 </template>
 

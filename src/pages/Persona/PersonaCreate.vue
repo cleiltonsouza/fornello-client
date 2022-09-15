@@ -1,4 +1,10 @@
 <template>
+<div>
+    <q-breadcrumbs>
+      <q-breadcrumbs-el label="Home" />
+      <q-breadcrumbs-el label="Persona" />
+      <q-breadcrumbs-el label="Novo" />
+    </q-breadcrumbs>
   <div>
     <v-jsoneditor
       v-model="dataInput"
@@ -17,6 +23,7 @@
 
               <strong>Adicionar</strong>
           </q-btn>
+  </div>
   </div>
 </template>
 

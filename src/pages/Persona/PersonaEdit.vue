@@ -1,10 +1,18 @@
 <template>
   <div>
+    <div class="q-pa-md q-gutter-sm">
+    <q-breadcrumbs>
+      <q-breadcrumbs-el label="Home" />
+      <q-breadcrumbs-el label="Persona" />
+      <q-breadcrumbs-el label="Atualização" />
+    </q-breadcrumbs>
+    </div>
+  <div>
     <v-jsoneditor
       v-model="dataInput"
       :options="options"
       plus="true"
-      height="800px"
+      height="700px"
       @error="onError"
       @
     >
@@ -17,6 +25,7 @@
 
               <strong>Atualizar</strong>
           </q-btn>
+  </div>
   </div>
 </template>
 

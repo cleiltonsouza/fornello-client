@@ -3,16 +3,16 @@ import { HttpClient } from "./HttpClientService";
 import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestParameters";
 import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel"
-export class PersonaService {
+export class MapeamentoService {
 
 
-    public async adicionar(persona: any) {
+    public async adicionar(mapeamento: any) {
         let parameters: IHttpClientRequestParameters
             = {
-                url: "http://localhost:3000/persona",
+                url: "http://localhost:3000/mapeamento",
 
             requiresToken: false,
-            payload: persona
+            payload: mapeamento
         }
         try {
             let result = await HttpClient.post(parameters);
@@ -27,7 +27,7 @@ export class PersonaService {
     public async listar() {
         let parameters: IHttpClientRequestParameters
             = {
-            url: "http://localhost:3000/persona",
+            url: "http://localhost:3000/mapeamento",
             requiresToken: false
         }
         try {
@@ -39,14 +39,14 @@ export class PersonaService {
         }
     }
 
-    public async atualizar(personaId:string, persona: any) {
+    public async atualizar(mapeamentoId:string, mapeamento: any) {
         let parameters: IHttpClientRequestParameters
             = {
-              url: `http://localhost:3000/persona/${personaId}`,
+              url: `http://localhost:3000/mapeamento/${mapeamentoId}`,
 
 
             requiresToken: true,
-            payload: persona
+            payload: mapeamento
         }
         try {
             let result = await HttpClient.put(parameters);
@@ -58,12 +58,12 @@ export class PersonaService {
         }
     }
 
-    public async recuperaPorId(personaId : string){
+    public async recuperaPorId(mapeamentoId : string){
 
 
         let parameters: IHttpClientRequestParameters
             = {
-                url: `http://localhost:3000/persona/${personaId}`,
+                url: `http://localhost:3000/mapeamento/${mapeamentoId}`,
             requiresToken: true
         }
         try {
@@ -73,7 +73,6 @@ export class PersonaService {
         } catch (error) {
             return null
         }
-        
     }
 
 

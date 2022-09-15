@@ -19,6 +19,14 @@ const routes: RouteConfig[] = [
         path: 'personaCreate',
         name: 'personaCreate',
         component: () => import('pages/Persona/PersonaCreate.vue')
+      },{
+        path: 'mapeamentoEdit/:mapeamentoId',
+        name: 'mapeamentoEdit',
+        component: () => import('pages/Mapeamento/MapeamentoEdit.vue')
+      },{
+        path: 'casoCreate/:mapeamentoId',
+        name: 'casoCreate',
+        component: () => import('pages/Caso/CasoCreate.vue')
       }
     ]
   },
