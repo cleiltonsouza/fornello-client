@@ -1,29 +1,44 @@
 <template>
-<div>
+  <div>
+
+    <div class="q-pa-md q-gutter-sm">
+
     <q-breadcrumbs>
       <q-breadcrumbs-el label="Home" />
       <q-breadcrumbs-el label="Persona" />
-      <q-breadcrumbs-el label="Novo" />
+      <q-breadcrumbs-el label="Nova Persona" />
     </q-breadcrumbs>
-  <div>
-    <v-jsoneditor
-      v-model="dataInput"
-      :options="options"
-      plus="true"
-      height="800px"
-      @error="onError"
-      @
-    >
-    </v-jsoneditor>
+ </div>
+    <div class="q-pa-md q-gutter-sm">
 
-    <q-btn
-            color="blue"
-            @click="adicionar()"
-                      >
+      <q-card class="my-card ">
+        <q-card-section>
+          <div class="text-h6">Nova Persona</div>
+          <div class="text-subtitle2">{{dataInput.nome}}</div>
+        </q-card-section>
 
-              <strong>Adicionar</strong>
-          </q-btn>
-  </div>
+        <q-card-section>
+          <v-jsoneditor
+            v-model="dataInput"
+            :options="options"
+            height="500px"
+            @error="onError"
+            @
+          >
+          </v-jsoneditor>
+        </q-card-section>
+
+        <q-separator dark />
+
+        <q-card-actions>
+
+          <q-btn color="primary" icon="check" label="Salvar" flat @click="adicionar()"/>
+
+          <q-btn  icon="arrow_back" label="Voltar" flat @click="voltar()"/>
+
+        </q-card-actions>
+      </q-card>
+    </div>
   </div>
 </template>
 
@@ -54,7 +69,8 @@ export default class PersonaCreate extends Vue {
     adicionar({persona:this.dataInput})
       .then((result) => {
         
-        console.log(result);
+        this.$q.notify(result);
+
       })
        .catch((err: any) => {
         this.$q.notify(err);
@@ -64,6 +80,10 @@ export default class PersonaCreate extends Vue {
       path: `persona`,
     });
       });
+  }
+
+    voltar() {
+    this.$router.replace({ name: "persona" });
   }
 
   created() {

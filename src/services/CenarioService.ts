@@ -3,20 +3,21 @@ import { HttpClient } from "./HttpClientService";
 import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestParameters";
 import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel"
-export class CasoService {
+import HttpStatusCode from "src/helpers/HttpStatusCode";
+export class CenarioService {
 
 
-    public async adicionar(caso: any) {
+    public async adicionar(cenario: any) {
         let parameters: IHttpClientRequestParameters
             = {
-                url: "http://localhost:3000/caso",
+                url: "http://localhost:3000/cenario",
 
             requiresToken: false,
-            payload: caso
+            payload: cenario
         }
         try {
             let result = await HttpClient.post(parameters);
-            let notify = result.ok ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
+            let notify = result.status == HttpStatusCode.CREATED ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
 
             return notify;
         } catch (error) {
@@ -27,7 +28,7 @@ export class CasoService {
     public async listar() {
         let parameters: IHttpClientRequestParameters
             = {
-            url: "http://localhost:3000/caso",
+            url: "http://localhost:3000/cenario",
             requiresToken: false
         }
         try {
@@ -39,18 +40,18 @@ export class CasoService {
         }
     }
 
-    public async atualizar(casoId:string, caso: any) {
+    public async atualizar(cenarioId:string, cenario: any) {
         let parameters: IHttpClientRequestParameters
             = {
-              url: `http://localhost:3000/caso/${casoId}`,
+              url: `http://localhost:3000/cenario/${cenarioId}`,
 
 
             requiresToken: true,
-            payload: caso
+            payload: cenario
         }
         try {
             let result = await HttpClient.put(parameters);
-            let notify = result.ok ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
+            let notify = result.status == HttpStatusCode.OK ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
 
             return notify;
         } catch (error) {
@@ -58,12 +59,12 @@ export class CasoService {
         }
     }
 
-    public async recuperaPorId(casoId : string){
+    public async recuperaPorId(cenarioId : string){
 
 
         let parameters: IHttpClientRequestParameters
             = {
-                url: `http://localhost:3000/caso/${casoId}`,
+                url: `http://localhost:3000/cenario/${cenarioId}`,
             requiresToken: true
         }
         try {
@@ -77,20 +78,20 @@ export class CasoService {
     }
 
 
-    // public async excluir(idConteudo : number){
-    //     let parameters: IHttpClientRequestParameters
-    //         = {
-    //         url: Config.api + `/api/conteudo/${idConteudo}`,
-    //         requiresToken: true,
-    //     }
-    //     try {
-    //         let result = await HttpClient.delete(parameters);
-    //         let notify = result.ok ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
+    public async excluir(cenarioId : number){
+        let parameters: IHttpClientRequestParameters
+            = {
+            url: `http://localhost:3000/cenario/${cenarioId}`,
+            requiresToken: true,
+        }
+        try {
+            let result = await HttpClient.delete(parameters);
+            let notify = result.status == HttpStatusCode.OK ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
         
-    //         return notify;
-    //     } catch (error) {
-    //         return NotifyHelper.erro(error)
-    //     }
-    // }
+            return notify;
+        } catch (error) {
+            return NotifyHelper.erro(error)
+        }
+    }
 
 }

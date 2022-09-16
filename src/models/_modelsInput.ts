@@ -10,15 +10,19 @@ export namespace _modelsInput {
     pathPersona: string | null;
   }
 
-  export interface Caso {
-    descricaoCaso: string | null;
+  export interface Cenario {
+    descricao: string | null;
     mapeamentoId: string | null;
-    mapeamentoTemplatePersonaCasoItens: MapeamentoTemplatePersonaCasoItens[] | null;
+    templateId : string | null; 
+    templateDescricao : string | null;
+    personaId : string | null;
+    persona : any | null; 
+    mapeamentoTemplatePersonaCenarioItens: MapeamentoTemplatePersonaCenarioItem[] | null;
   }
 
-  export interface MapeamentoTemplatePersonaCasoItens{
-    mapeamentoId : string | null, 
-    mapeamentoItem : any | null, 
+  export interface MapeamentoTemplatePersonaCenarioItem{
+    mapeamentoTemplatePersonaCenarioItensId : number | null,
+    mapeamentoItem : MapeamentoItem | null, 
     value : any
   }
 }

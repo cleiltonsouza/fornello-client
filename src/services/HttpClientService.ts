@@ -51,7 +51,7 @@ export class HttpClient  {
       axios
         .post(url, payload, options)
         .then((response: any) => {
-          resolve(response.data as any);
+          resolve(response as any);
         })
         .catch((response: any) => {
           reject(response);
@@ -80,7 +80,7 @@ export class HttpClient  {
       axios
         .put(url, payload, options)
         .then((response: any) => {
-          resolve(response.data as any);
+          resolve(response as any);
         })
         .catch((response: any) => {
           reject(response);

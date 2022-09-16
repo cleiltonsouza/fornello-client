@@ -24,9 +24,17 @@ const routes: RouteConfig[] = [
         name: 'mapeamentoEdit',
         component: () => import('pages/Mapeamento/MapeamentoEdit.vue')
       },{
-        path: 'casoCreate/:mapeamentoId',
-        name: 'casoCreate',
-        component: () => import('pages/Caso/CasoCreate.vue')
+        path: 'cenarioCreate',
+        name: 'cenarioCreate',
+        component: () => import('pages/Cenario/CenarioCreate.vue')
+      },{
+        path: 'cenarioEdit/:cenarioId',
+        name: 'cenarioEdit',
+        component: () => import('pages/Cenario/CenarioEdit.vue')
+      },{
+        path: 'cenario',
+        name: 'cenario',
+        component: () => import('pages/Cenario/CenarioList.vue')
       }
     ]
   },
