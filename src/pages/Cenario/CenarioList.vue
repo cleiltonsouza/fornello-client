@@ -8,7 +8,7 @@
     </div>
   <div class="q-pa-md">
     <q-table
-      title="People"
+      title="Cenários"
       :data="data"
       :columns="colunas"
       :loading="loading"
@@ -39,7 +39,7 @@
       </template>
     </q-table>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add" color="positive" @click="novaPersona">
+      <q-btn fab icon="add" color="positive" @click="novoCenario">
         <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
           <strong>Adicionar</strong>
         </q-tooltip>
@@ -51,38 +51,52 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { PersonaService } from "../../services/PersonaService";
+import { CenarioService } from "../../services/CenarioService";
 @Component
-export default class PersonaList extends Vue {
+export default class CenarioList extends Vue {
   data: any[] = [];
   loading: boolean = true;
 
-  private _personaService!: PersonaService;
+  private _cenarioService!: CenarioService;
 
   colunas: Array<object> = [
     {
-      field: "personaId",
+      field: "cenarioId",
       label: "Id",
-      nome: "personaId",
+      nome: "cenarioId",
+      align: "left",
+      
+    },
+    {
+      field: "descricao",
+      label: "Descrição",
+      nome: "descricao",
       align: "left",
       
     },
     {
       field: "nome",
-      label: "Nome",
+      label: "Persona",
       nome: "nome",
       align: "left",
       
     },
+
+    {
+      field: "template",
+      label: "Template",
+      nome: "template",
+      align: "left",
+    },
     { name: "actions", label: "", field: "", align: "center" },
   ];
 
-  recuperaConteudos() {
+  recuperaCenarios() {
     this.loading = true;
-    this._personaService
+    this._cenarioService
       .listar()
       .then((result) => {
-        this.data = result.map(s=>{return {personaId : s._id, nome : s.persona.nome}});
+        this.data = result.map(s=>{return {cenarioId : s._id, descricao: s.descricao, template : s.templateDescricao,  nome : s.persona.nome}});
       }).catch((err: any) => {
         this.$q.notify(err);
       })
@@ -92,24 +106,21 @@ export default class PersonaList extends Vue {
   }
 
   created() {
-    this._personaService = new PersonaService();
-    this.recuperaConteudos();
+    this._cenarioService = new CenarioService();
+    this.recuperaCenarios();
   }
 
   editar(row: any) {
     this.$router.push({
-      path: `personaEdit/${row.row.personaId}`,
+      path: `cenarioEdit/${row.row.cenarioId}`,
     });
   }
 
-  excluir(row: any) {
-    console.log(row);
-  }
-
-  novaPersona() {
+  novoCenario() {
     this.$router.push({
-      path: `personaCreate`,
+      path: `cenarioCreate`,
     });
   }
+
 }
 </script>

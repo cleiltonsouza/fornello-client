@@ -3,10 +3,18 @@ import { HttpClient } from "./HttpClientService";
 import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestParameters";
 import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel"
+import { STATUS_CODES } from "http";
+import HttpStatusCode from "src/helpers/HttpStatusCode";
 export class PersonaService {
 
 
     public async adicionar(persona: any) {
+
+        if(persona.persona.nome == undefined){
+            return NotifyHelper.erro("Favor adicionar propriedade 'nome'.")
+        }
+
+
         let parameters: IHttpClientRequestParameters
             = {
                 url: "http://localhost:3000/persona",
@@ -16,7 +24,7 @@ export class PersonaService {
         }
         try {
             let result = await HttpClient.post(parameters);
-            let notify = result.ok ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
+            let notify = result.status == HttpStatusCode.CREATED ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
 
             return notify;
         } catch (error) {
@@ -40,6 +48,10 @@ export class PersonaService {
     }
 
     public async atualizar(personaId:string, persona: any) {
+
+        if(persona.persona.nome == undefined){
+            return NotifyHelper.erro("Favor adicionar propriedade 'nome'.")
+        }
         let parameters: IHttpClientRequestParameters
             = {
               url: `http://localhost:3000/persona/${personaId}`,
@@ -50,7 +62,8 @@ export class PersonaService {
         }
         try {
             let result = await HttpClient.put(parameters);
-            let notify = result.ok ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
+
+            let notify = result.status == HttpStatusCode.OK ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
 
             return notify;
         } catch (error) {
