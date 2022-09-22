@@ -108,7 +108,7 @@ export class HttpClient  {
       axios
         .delete(url, options)
         .then((response: any) => {
-          resolve(response.data as any);
+          resolve(response as any);
         })
         .catch((response: any) => {
           reject(response);

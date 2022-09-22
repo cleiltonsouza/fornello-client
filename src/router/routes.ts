@@ -35,6 +35,21 @@ const routes: RouteConfig[] = [
         path: 'cenario',
         name: 'cenario',
         component: () => import('pages/Cenario/CenarioList.vue')
+      },
+      {
+        path: 'template',
+        name: 'template',
+        component: () => import('pages/Template/TemplateList.vue')
+      },
+      {
+        path: 'templateEdit/:templateId',
+        name: 'templateEdit',
+        component: () => import('pages/Template/TemplateEdit.vue')
+      },
+      {
+        path: 'templateCreate',
+        name: 'templateCreate',
+        component: () => import('pages/Template/TemplateCreate.vue')
       }
     ]
   },

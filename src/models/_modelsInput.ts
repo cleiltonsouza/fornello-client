@@ -30,4 +30,13 @@ export namespace _modelsInput {
     mapeamentoItem : MapeamentoItem | null, 
     value : any
   }
+
+  export interface Template {
+    api: string | null;
+    endpoint: string | null;
+    version : string | null; 
+    method : string | null;
+    location : string | null;
+    template : any | null; 
+  }
 }
