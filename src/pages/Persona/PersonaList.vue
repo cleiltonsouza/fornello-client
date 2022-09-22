@@ -13,8 +13,9 @@
       :columns="colunas"
       :loading="loading"
       row-key="personaId"
-      rowsPerPage="15"
       color="primary"
+       :pagination.sync="pagination"
+
     >
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
@@ -56,7 +57,9 @@ import { PersonaService } from "../../services/PersonaService";
 export default class PersonaList extends Vue {
   data: any[] = [];
   loading: boolean = true;
-
+  pagination: any =  {
+        rowsPerPage: 30 // current rows per page being displayed
+  }
   private _personaService!: PersonaService;
 
   colunas: Array<object> = [
