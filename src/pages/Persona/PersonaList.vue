@@ -1,51 +1,33 @@
 <template>
   <div>
     <div class="q-pa-md q-gutter-sm">
-    <q-breadcrumbs>
-      <q-breadcrumbs-el label="Home" />
-      <q-breadcrumbs-el label="Persona" />
-    </q-breadcrumbs>
+      <q-breadcrumbs>
+        <q-breadcrumbs-el label="Home" />
+        <q-breadcrumbs-el label="Persona" />
+      </q-breadcrumbs>
     </div>
-  <div class="q-pa-md">
-    <q-table
-      title="People"
-      :data="data"
-      :columns="colunas"
-      :loading="loading"
-      row-key="personaId"
-      rowsPerPage="15"
-      color="primary"
-    >
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn
-            dense
-            round
-            flat
-            color="warning"
-            @click="editar(props)"
-            icon="edit"
-          >
-            <q-tooltip
-              anchor="top middle"
-              self="bottom middle"
-              :offset="[10, 10]"
-            >
-              <strong>Atualizar</strong>
-            </q-tooltip>
-          </q-btn>
+    <div class="q-pa-md">
+      <q-table title="People" :data="data" :columns="colunas" :loading="loading" row-key="personaId" rowsPerPage="15"
+        color="primary">
+        <template v-slot:body-cell-actions="props">
+          <q-td :props="props">
+            <q-btn dense round flat color="warning" @click="editar(props)" icon="edit">
+              <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                <strong>Atualizar</strong>
+              </q-tooltip>
+            </q-btn>
 
-        </q-td>
-      </template>
-    </q-table>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add" color="positive" @click="novaPersona">
-        <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
-          <strong>Adicionar</strong>
-        </q-tooltip>
-      </q-btn>
-    </q-page-sticky>
-  </div>
+          </q-td>
+        </template>
+      </q-table>
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn fab icon="add" color="positive" @click="novaPersona">
+          <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
+            <strong>Adicionar</strong>
+          </q-tooltip>
+        </q-btn>
+      </q-page-sticky>
+    </div>
   </div>
 </template>
 
@@ -65,14 +47,14 @@ export default class PersonaList extends Vue {
       label: "Id",
       nome: "personaId",
       align: "left",
-      
+
     },
     {
       field: "nome",
       label: "Nome",
       nome: "nome",
       align: "left",
-      
+
     },
     { name: "actions", label: "", field: "", align: "center" },
   ];
@@ -82,7 +64,7 @@ export default class PersonaList extends Vue {
     this._personaService
       .listar()
       .then((result) => {
-        this.data = result.map(s=>{return {personaId : s._id, nome : s.persona.nome}});
+        this.data = result.map(s => { return { personaId: s._id, nome: s.persona.nome } });
       }).catch((err: any) => {
         this.$q.notify(err);
       })
