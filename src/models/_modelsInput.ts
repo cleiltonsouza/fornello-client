@@ -1,13 +1,18 @@
+import { TipoMapeamentoItemEnum } from "src/enuns/TipoMapeamentoItemEnum";
+
 export namespace _modelsInput {
   export interface Mapeamento {
     templateId: string | null;
     template: any | null;
     mapeamentoItens: MapeamentoItem[] | null;
+    tipoMapeamentoItem : TipoMapeamentoItemEnum | null
+    
   }
   export interface MapeamentoItem {
     mapeamentoItemId: number | null;
     pathTemplate: string | null;
     pathPersona: string | null;
+    subMapeamentoItem : MapeamentoItem[] | null
   }
 
   export interface Cenario {

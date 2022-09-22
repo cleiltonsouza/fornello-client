@@ -15,6 +15,8 @@
       row-key="personaId"
       rowsPerPage="15"
       color="primary"
+      :pagination.sync="pagination"
+      
     >
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
@@ -56,7 +58,9 @@ import { CenarioService } from "../../services/CenarioService";
 export default class CenarioList extends Vue {
   data: any[] = [];
   loading: boolean = true;
-
+  pagination: any =  {
+        rowsPerPage: 30 // current rows per page being displayed
+  }
   private _cenarioService!: CenarioService;
 
   colunas: Array<object> = [

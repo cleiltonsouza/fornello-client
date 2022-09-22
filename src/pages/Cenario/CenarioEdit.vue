@@ -15,11 +15,15 @@
         </q-card-section>
 
         <q-card-section>
+           <q-form  ref="formAtualizar">
           <div class="q-pa-md q-gutter-md">
+            
             <q-input
               outlined
               v-model="cenarioInput.descricao"
               label="Descrição do cenario"
+               focus
+              :rules="[ val => val && val.length > 0 || 'Campo de preenchimento obrigatório']"
             />
 
             <q-select
@@ -37,36 +41,20 @@
               @input="pessoaSelecionada"
               label="Persona"
             />
-            <div v-if="cenarioInput.mapeamentoTemplatePersonaCenarioItens.length > 0">
+             <div v-if="cenarioInput.mapeamentoTemplatePersonaCenarioItens.length > 0">
               <div
                 class="text-h6"
                 style="margin-top: 10px"
                 v-for="mapeamento in cenarioInput.mapeamentoTemplatePersonaCenarioItens"
                 v-bind:key="mapeamento.mapeamentoItem.mapeamentoItemId"
               >
-                <div class="col-12">
-                  <q-badge color="primary" align="middle" text-color="white">
-                    template api
-                  </q-badge>
-                  <q-badge align="middle" color="white" text-color="black">
-                    {{ mapeamento.mapeamentoItem.pathTemplate }}
-                  </q-badge>
-                </div>
-                <div class="col-12">
-                  <q-badge color="indigo" align="middle" text-color="white">
-                    template persona
-                  </q-badge>
-                  <q-badge align="middle" color="white" text-color="black">
-                    {{ mapeamento.mapeamentoItem.pathPersona }}
-                  </q-badge>
-                </div>
-                <div class="col-12">
-                  <q-input outlined v-model="mapeamento.value" label="Valor" />
-                </div>
-                <q-separator />
+                <cenario-mapeamento-template-persona-component
+                  :mapeamentoTemplatePersonaCenario="mapeamento"
+                />
               </div>
             </div>
           </div>
+           </q-form>
         </q-card-section>
 
         <q-separator dark />
@@ -94,8 +82,10 @@ import { _modelsInput } from "../../models/_modelsInput";
 import { MapeamentoService } from "../../services/MapeamentoService";
 import { PersonaService } from "../../services/PersonaService";
 import  RecuperaObjetoPorString  from "../../helpers/RecuperaObjetoPorString";
+import CenarioMapeamentoTemplatePersonaComponent from "./components/CenarioMapeamentoTemplatePersonaComponent.vue";
 
-@Component
+@Component({ components: { CenarioMapeamentoTemplatePersonaComponent } })
+
 export default class CenarioEdit extends Vue {
   cenarioId : string = "";
   mapeamentoId: string = "";
@@ -105,6 +95,7 @@ export default class CenarioEdit extends Vue {
 
   mapeamentoInput: _modelsInput.Mapeamento = {
     templateId: "",
+    tipoMapeamentoItem: 0,
     template: {},
     mapeamentoItens: [],
   };
@@ -125,17 +116,22 @@ export default class CenarioEdit extends Vue {
   personas: any[] = [];
 
   atualizar() {
-    this._cenarioService
-      .atualizar(this.cenarioId, this.cenarioInput)
-      .then((result) => {
 
-        this.$q.notify(result);
-      })
-      .catch((err: any) => {
-        this.$q.notify(err);
-      })
-      .finally(() => {
-        this.$q.loading.hide();
+    let resultValidation = this.$refs.formAtualizar
+      .validation()
+      .then(x=>{
+        this._cenarioService
+          .atualizar(this.cenarioId, this.cenarioInput)
+          .then((result) => {
+          
+            this.$q.notify(result);
+          })
+          .catch((err: any) => {
+            this.$q.notify(err);
+          })
+          .finally(() => {
+            this.$q.loading.hide();
+          });
       });
   }
 
@@ -228,7 +224,7 @@ export default class CenarioEdit extends Vue {
     if(this.cenarioInput.persona && this.cenarioInput.mapeamentoId){
     this.cenarioInput.mapeamentoTemplatePersonaCenarioItens.forEach(x=>{
       
-      if(x.value == undefined){
+      if(x.value == undefined && x.mapeamentoItem.pathPersona){
         x.value = RecuperaObjetoPorString.recuperar(this.cenarioInput.persona, x.mapeamentoItem.pathPersona);
         }
     })

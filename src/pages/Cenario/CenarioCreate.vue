@@ -20,6 +20,8 @@
               outlined
               v-model="cenarioInput.descricao"
               label="Descrição do cenario"
+              focus
+              :rules="[ val => val && val.length > 0 || 'Campo de preenchimento obrigatório']"
             />
 
             <q-select
@@ -37,38 +39,20 @@
               @input="pessoaSelecionada"
               label="Persona"
             />
-            <div v-if="personaSelecionada.data != null">
+            <div v-if="cenarioInput.mapeamentoTemplatePersonaCenarioItens.length > 0">
               <div
                 class="text-h6"
                 style="margin-top: 10px"
                 v-for="mapeamento in cenarioInput.mapeamentoTemplatePersonaCenarioItens"
                 v-bind:key="mapeamento.mapeamentoItem.mapeamentoItemId"
               >
-                <div class="col-12">
-                  <q-badge color="primary" align="middle" text-color="white">
-                    template api
-                  </q-badge>
-                  <q-badge align="middle" color="white" text-color="black">
-                    {{ mapeamento.mapeamentoItem.pathTemplate }}
-                  </q-badge>
-                </div>
-                <div class="col-12">
-                  <q-badge color="indigo" align="middle" text-color="white">
-                    template persona
-                  </q-badge>
-                  <q-badge align="middle" color="white" text-color="black">
-                    {{ mapeamento.mapeamentoItem.pathPersona }}
-                  </q-badge>
-                </div>
-                <div class="col-12">
-                  <q-input outlined v-model="mapeamento.value" label="Valor" />
-                </div>
-                <q-separator />
+                <cenario-mapeamento-template-persona-component
+                  :mapeamentoTemplatePersonaCenario="mapeamento"
+                />
               </div>
             </div>
           </div>
         </q-card-section>
-
         <q-separator dark />
 
         <q-card-actions>
@@ -93,17 +77,19 @@ import { CenarioService } from "../../services/CenarioService";
 import { _modelsInput } from "../../models/_modelsInput";
 import { MapeamentoService } from "../../services/MapeamentoService";
 import { PersonaService } from "../../services/PersonaService";
-import  RecuperaObjetoPorString  from "../../helpers/RecuperaObjetoPorString";
+import CenarioMapeamentoTemplatePersonaComponent from "./components/CenarioMapeamentoTemplatePersonaComponent.vue";
+import RecuperaObjetoPorString from "../../helpers/RecuperaObjetoPorString";
 
-@Component
+@Component({ components: { CenarioMapeamentoTemplatePersonaComponent } })
 export default class CenarioCreate extends Vue {
   mapeamentoId: string = "";
   personaId: string = "";
 
-  mapeamentos : any[] = []
+  mapeamentos: any[] = [];
 
   mapeamentoInput: _modelsInput.Mapeamento = {
     templateId: "",
+    tipoMapeamentoItem: 0,
     template: {},
     mapeamentoItens: [],
   };
@@ -111,10 +97,10 @@ export default class CenarioCreate extends Vue {
   cenarioInput: _modelsInput.Cenario = {
     descricao: "",
     mapeamentoId: "",
-    templateId : "",
-    templateDescricao : "",
-    personaId : "",
-    persona : {},
+    templateId: "",
+    templateDescricao: "",
+    personaId: "",
+    persona: {},
     mapeamentoTemplatePersonaCenarioItens: [],
   };
   private _personaService!: PersonaService;
@@ -127,7 +113,6 @@ export default class CenarioCreate extends Vue {
     this._cenarioService
       .adicionar(this.cenarioInput)
       .then((result) => {
-
         this.$q.notify(result);
       })
       .catch((err: any) => {
@@ -138,12 +123,11 @@ export default class CenarioCreate extends Vue {
       });
   }
 
-  recuperaMapeamentos(){
+  recuperaMapeamentos() {
     this._mapeamentoService
       .listar()
       .then((result) => {
         this.mapeamentos = result.map((x) => {
-        
           return { label: x.template ?? "", value: x._id, data: x };
         });
       })
@@ -159,18 +143,17 @@ export default class CenarioCreate extends Vue {
     this._mapeamentoService
       .recuperaPorId(mapeamentoId)
       .then((result) => {
-        
-this.mapeamentoInput = result;
-        this.cenarioInput.mapeamentoId = this.mapeamentoId;
-        this.cenarioInput.mapeamentoTemplatePersonaCenarioItens = this.mapeamentoInput.mapeamentoItens
-          .map(x=> {
-            let newitem : _modelsInput.MapeamentoTemplatePersonaCenarioItem =
-                          {
-                            mapeamentoTemplatePersonaCenarioItensId : x.mapeamentoItemId,
-                            mapeamentoItem : x,
-                            value : null
-                          }
-                          return newitem});
+        console.log(result);
+        this.cenarioInput.mapeamentoTemplatePersonaCenarioItens =
+          result.mapeamentoItens.map((x) => {
+            let newitem: _modelsInput.MapeamentoTemplatePersonaCenarioItem = {
+              mapeamentoTemplatePersonaCenarioItensId: x.mapeamentoItemId,
+              mapeamentoItem: x,
+              value: null,
+            };
+            return newitem;
+          });
+        this.montaValueDoMapeamentoPorPersona();
       })
       .catch((err: any) => {
         this.$q.notify(err);
@@ -204,7 +187,6 @@ this.mapeamentoInput = result;
       });
   }
 
-
   pessoaSelecionada(value: any) {
     this.personaSelecionada = value;
     this.cenarioInput.persona = value.data;
@@ -213,28 +195,23 @@ this.mapeamentoInput = result;
     this.montaValueDoMapeamentoPorPersona();
   }
 
-  mapeamentoSelecionado(value: any){
+  mapeamentoSelecionado(value: any) {
     this.cenarioInput.mapeamentoId = value.data._id;
     this.cenarioInput.templateId = value.data.templateId;
-    this.cenarioInput.templateDescricao = value.data.template
-    this.cenarioInput.mapeamentoTemplatePersonaCenarioItens = value.data.mapeamentoItens
-          .map(x=> {
-            let newitem : _modelsInput.MapeamentoTemplatePersonaCenarioItem =
-                          {
-                            mapeamentoTemplatePersonaCenarioItensId : x.mapeamentoItemId,
-                            mapeamentoItem : x,
-                            value : null
-                          }
-                          return newitem});
-    this.montaValueDoMapeamentoPorPersona();
+    this.cenarioInput.templateDescricao = value.data.template;
+    this.recuperaMapeamentoPorId(value.data._id);
   }
 
-  montaValueDoMapeamentoPorPersona(){
-
-    if(this.cenarioInput.persona && this.cenarioInput.mapeamentoId){
-    this.cenarioInput.mapeamentoTemplatePersonaCenarioItens.forEach(x=>{
-        x.value = RecuperaObjetoPorString.recuperar(this.cenarioInput.persona, x.mapeamentoItem.pathPersona);
-    })
+  montaValueDoMapeamentoPorPersona() {
+    if (this.cenarioInput.personaId && this.cenarioInput.mapeamentoId) {
+      this.cenarioInput.mapeamentoTemplatePersonaCenarioItens.forEach((x) => {
+        if (x.mapeamentoItem.pathPersona) {
+          x.value = RecuperaObjetoPorString.recuperar(
+            this.cenarioInput.persona,
+            x.mapeamentoItem.pathPersona
+          );
+        }
+      });
     }
   }
 
@@ -245,7 +222,6 @@ this.mapeamentoInput = result;
     this.recuperaMapeamentos();
     this.recuperaPersonas();
   }
-
 
   voltar() {
     this.$router.replace({ name: "cenario" });

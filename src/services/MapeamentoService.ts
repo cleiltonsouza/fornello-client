@@ -3,6 +3,7 @@ import { HttpClient } from "./HttpClientService";
 import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestParameters";
 import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel"
+import HttpStatusCode from "src/helpers/HttpStatusCode";
 export class MapeamentoService {
 
 
@@ -50,7 +51,7 @@ export class MapeamentoService {
         }
         try {
             let result = await HttpClient.put(parameters);
-            let notify = result.ok ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
+            let notify = result.status == HttpStatusCode.OK ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
 
             return notify;
         } catch (error) {

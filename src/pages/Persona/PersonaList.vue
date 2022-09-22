@@ -6,17 +6,36 @@
         <q-breadcrumbs-el label="Persona" />
       </q-breadcrumbs>
     </div>
-    <div class="q-pa-md">
-      <q-table title="People" :data="data" :columns="colunas" :loading="loading" row-key="personaId" rowsPerPage="15"
-        color="primary">
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <q-btn dense round flat color="warning" @click="editar(props)" icon="edit">
-              <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
-                <strong>Atualizar</strong>
-              </q-tooltip>
-            </q-btn>
 
+  <div class="q-pa-md">
+    <q-table
+      title="People"
+      :data="data"
+      :columns="colunas"
+      :loading="loading"
+      row-key="personaId"
+      color="primary"
+       :pagination.sync="pagination"
+
+    >
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn
+            dense
+            round
+            flat
+            color="warning"
+            @click="editar(props)"
+            icon="edit"
+          >
+            <q-tooltip
+              anchor="top middle"
+              self="bottom middle"
+              :offset="[10, 10]"
+            >
+              <strong>Atualizar</strong>
+            </q-tooltip>
+          </q-btn>
           </q-td>
         </template>
       </q-table>
@@ -38,7 +57,9 @@ import { PersonaService } from "../../services/PersonaService";
 export default class PersonaList extends Vue {
   data: any[] = [];
   loading: boolean = true;
-
+  pagination: any =  {
+        rowsPerPage: 30 // current rows per page being displayed
+  }
   private _personaService!: PersonaService;
 
   colunas: Array<object> = [
