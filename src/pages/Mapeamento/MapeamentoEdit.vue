@@ -11,7 +11,11 @@
       <q-card class="my-card">
         <q-card-section>
           <div class="text-h6">Mapeamento</div>
-          <div class="text-subtitle2">{{ mapeamentoInput.template }}</div>
+          <div class="text-subtitle2">{{ mapeamentoInput.template.api }}</div>
+          <div class="text-subtitle2">{{ mapeamentoInput.template.endpoint }}</div>
+          <div class="text-subtitle2">{{ mapeamentoInput.template.version }}</div>
+          <div class="text-subtitle2">{{ mapeamentoInput.template.method }}</div>
+          <div class="text-subtitle2">{{ mapeamentoInput.template.location }}</div>
         </q-card-section>
 
         <q-card-section>
