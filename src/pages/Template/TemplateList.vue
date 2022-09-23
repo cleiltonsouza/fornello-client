@@ -11,6 +11,11 @@
         color="primary">
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
+           <q-btn dense round flat color="primary" @click="editarMapeamento(props)" icon="map">
+              <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                <strong>Mapeamento</strong>
+              </q-tooltip>
+            </q-btn>
             <q-btn dense round flat color="warning" @click="editar(props)" icon="edit">
               <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                 <strong>Editar</strong>
@@ -95,6 +100,12 @@ export default class TemplateList extends Vue {
       })
       .catch((err: any) => this.$q.notify(err))
       .finally(() => this.$router.push({ path: `template` }));
+  }
+
+  editarMapeamento(row: any) {
+    this.$router.push({
+      path: `mapeamentoEdit/${row.row.mapeamentoId}`,
+    });
   }
 
   novoTemplate() {
