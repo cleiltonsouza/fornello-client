@@ -128,7 +128,7 @@ export default class CenarioCreate extends Vue {
       .listar()
       .then((result) => {
         this.mapeamentos = result.map((x) => {
-          return { label: x.template ?? "", value: x._id, data: x };
+          return { label: x.template.descricao ?? "", value: x._id, data: x };
         });
       })
       .catch((err: any) => {
@@ -198,7 +198,7 @@ export default class CenarioCreate extends Vue {
   mapeamentoSelecionado(value: any) {
     this.cenarioInput.mapeamentoId = value.data._id;
     this.cenarioInput.templateId = value.data.templateId;
-    this.cenarioInput.templateDescricao = value.data.template;
+    this.cenarioInput.templateDescricao = value.data.template.descricao;
     this.recuperaMapeamentoPorId(value.data._id);
   }
 

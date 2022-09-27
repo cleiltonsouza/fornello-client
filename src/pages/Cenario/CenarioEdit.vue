@@ -32,6 +32,7 @@
               :options="mapeamentos"
               @input="mapeamentoSelecionado"
               label="Mapeamento"
+              readonly
             />
 
             <q-select
@@ -40,6 +41,8 @@
               :options="personas"
               @input="pessoaSelecionada"
               label="Persona"
+              readonly
+
             />
              <div v-if="cenarioInput.mapeamentoTemplatePersonaCenarioItens.length > 0">
               <div
@@ -79,6 +82,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { CenarioService } from "../../services/CenarioService";
 import { _modelsInput } from "../../models/_modelsInput";
+import NotifyHelper from "../../helpers/NotifyHelpter"
 import { MapeamentoService } from "../../services/MapeamentoService";
 import { PersonaService } from "../../services/PersonaService";
 import  RecuperaObjetoPorString  from "../../helpers/RecuperaObjetoPorString";
@@ -117,9 +121,9 @@ export default class CenarioEdit extends Vue {
 
   atualizar() {
 
-    let resultValidation = this.$refs.formAtualizar
-      .validation()
-      .then(x=>{
+    let resultValidation = this.$refs.formAtualizar.validate()
+    .then(success => {
+      if(success){
         this._cenarioService
           .atualizar(this.cenarioId, this.cenarioInput)
           .then((result) => {
@@ -132,7 +136,11 @@ export default class CenarioEdit extends Vue {
           .finally(() => {
             this.$q.loading.hide();
           });
-      });
+      }else{
+        
+            this.$q.notify(NotifyHelper.erro("Favor preencher todos os campos obrigatórios"));
+      }
+  })
   }
 
   recuperaMapeamentos(){
@@ -141,8 +149,9 @@ export default class CenarioEdit extends Vue {
       .then((result) => {
         this.mapeamentos = result.map((x) => {
         
-          return { label: x.template ?? "", value: x._id, data: x };
+          return { label: x.template.descricao ?? "", value: x._id, data: x };
         });
+
       })
       .catch((err: any) => {
         this.$q.notify(err);
@@ -153,13 +162,17 @@ export default class CenarioEdit extends Vue {
   }
 
   recuperaCenarioPorId(cenarioId: string) {
+    return new Promise( (resolve) =>{
+
     this._cenarioService
       .recuperaPorId(cenarioId)
       .then((result) => {
 
         this.cenarioInput = result;
-        this.mapeamentoId = this.cenarioInput.mapeamentoId;
-        this.personaId = this.cenarioInput.personaId;
+        
+        this.mapeamentoId = this.mapeamentos.filter(x=> {return x.value == this.cenarioInput.mapeamentoId })[0];
+        this.personaId = this.personas.filter(x=> {return x.value == this.cenarioInput.personaId })[0];
+
         this.montaValueDoMapeamentoPorPersona();
       })
       .catch((err: any) => {
@@ -167,10 +180,14 @@ export default class CenarioEdit extends Vue {
       })
       .finally(() => {
         this.$q.loading.hide();
+        resolve('')
       });
+      });
+
   }
 
   recuperaPersonas() {
+    return new Promise( (resolve) =>{
     this._personaService
       .listar()
       .then((result) => {
@@ -191,7 +208,10 @@ export default class CenarioEdit extends Vue {
       })
       .finally(() => {
         this.$q.loading.hide();
+         resolve('');
       });
+
+      })
   }
 
 
@@ -206,7 +226,7 @@ export default class CenarioEdit extends Vue {
   mapeamentoSelecionado(value: any){
     this.cenarioInput.mapeamentoId = value.data._id;
     this.cenarioInput.templateId = value.data.templateId;
-    this.cenarioInput.templateDescricao = value.data.template
+    this.cenarioInput.templateDescricao = value.data.template.descricao;
     this.cenarioInput.mapeamentoTemplatePersonaCenarioItens = value.data.mapeamentoItens
           .map(x=> {
             let newitem : _modelsInput.MapeamentoTemplatePersonaCenarioItem =
@@ -220,7 +240,6 @@ export default class CenarioEdit extends Vue {
   }
 
   montaValueDoMapeamentoPorPersona(){
-    console.log(this.cenarioInput);
     if(this.cenarioInput.persona && this.cenarioInput.mapeamentoId){
     this.cenarioInput.mapeamentoTemplatePersonaCenarioItens.forEach(x=>{
       
@@ -231,15 +250,15 @@ export default class CenarioEdit extends Vue {
     }
   }
 
-  created() {
+  async created() {
     this._mapeamentoService = new MapeamentoService();
     this._personaService = new PersonaService();
     this._cenarioService = new CenarioService();
     this.cenarioId = this.$route.params.cenarioId;
 
-    this.recuperaCenarioPorId(this.cenarioId);
-    this.recuperaMapeamentos();
-    this.recuperaPersonas();
+    await Promise.all([this.recuperaMapeamentos(),this.recuperaPersonas() ])
+    await this.recuperaCenarioPorId(this.cenarioId);
+
   }
 
 
