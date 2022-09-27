@@ -22,6 +22,7 @@ export namespace _modelsInput {
     templateDescricao : string | null;
     personaId : string | null;
     persona : any | null; 
+    compilado : any | null;
     mapeamentoTemplatePersonaCenarioItens: MapeamentoTemplatePersonaCenarioItem[] | null;
   }
 
