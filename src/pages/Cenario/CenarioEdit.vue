@@ -71,10 +71,21 @@
             @click="atualizar()"
           />
 
+             <q-btn
+            color="secondary"
+            icon="check"
+            label="Compilado"
+            flat
+            @click="visualizarCompilado()"
+          />
+
           <q-btn icon="arrow_back" label="Voltar" flat @click="voltar()" />
         </q-card-actions>
       </q-card>
     </div>
+    <dialog-visualizar-compilado :compliado="cenarioInput.compilado" 
+      ref="dialogVisualizarCompilado"
+    ></dialog-visualizar-compilado>
   </div>
 </template>
 
@@ -87,8 +98,8 @@ import { MapeamentoService } from "../../services/MapeamentoService";
 import { PersonaService } from "../../services/PersonaService";
 import  RecuperaObjetoPorString  from "../../helpers/RecuperaObjetoPorString";
 import CenarioMapeamentoTemplatePersonaComponent from "./components/CenarioMapeamentoTemplatePersonaComponent.vue";
-
-@Component({ components: { CenarioMapeamentoTemplatePersonaComponent } })
+import DialogVisualizarCompilado from "./components/DialogVisualizarCompilado.vue"
+@Component({ components: { CenarioMapeamentoTemplatePersonaComponent, DialogVisualizarCompilado } })
 
 export default class CenarioEdit extends Vue {
   cenarioId : string = "";
@@ -111,6 +122,7 @@ export default class CenarioEdit extends Vue {
     templateDescricao : "",
     personaId : "",
     persona : {},
+    compilado: {},
     mapeamentoTemplatePersonaCenarioItens: [],
   };
   private _personaService!: PersonaService;
@@ -118,6 +130,11 @@ export default class CenarioEdit extends Vue {
   private _cenarioService!: CenarioService;
   personaSelecionada: any = {};
   personas: any[] = [];
+
+  visualizarCompilado(){
+    (this.$refs.dialogVisualizarCompilado as Vue & { show(any): boolean }).show(this.cenarioInput.compilado);
+
+  }
 
   atualizar() {
 
