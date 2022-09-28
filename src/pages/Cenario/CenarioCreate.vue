@@ -113,10 +113,11 @@ export default class CenarioCreate extends Vue {
     this._cenarioService
       .adicionar(this.cenarioInput)
       .then((result) => {
-        this.$q.notify(result);
+        this.$q.notify(result.notificacao);
+        this.editar(result.data._id);
       })
       .catch((err: any) => {
-        this.$q.notify(err);
+        this.$q.notify(err.notificacao);
       })
       .finally(() => {
         this.$q.loading.hide();
@@ -225,6 +226,10 @@ export default class CenarioCreate extends Vue {
 
   voltar() {
     this.$router.replace({ name: "cenario" });
+  }
+
+  editar(cenarioId : string) {
+    this.$router.replace({ path: `cenarioEdit/${cenarioId}`,});
   }
 }
 </script>

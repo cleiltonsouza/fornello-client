@@ -71,14 +71,13 @@
             @click="atualizar()"
           />
 
-             <q-btn
-            color="secondary"
-            icon="check"
+                <q-btn
+            color="lingth"
+            icon="visibility"
             label="Compilado"
             flat
             @click="visualizarCompilado()"
           />
-
           <q-btn icon="arrow_back" label="Voltar" flat @click="voltar()" />
         </q-card-actions>
       </q-card>
@@ -144,11 +143,12 @@ export default class CenarioEdit extends Vue {
         this._cenarioService
           .atualizar(this.cenarioId, this.cenarioInput)
           .then((result) => {
-          
-            this.$q.notify(result);
+            console.log(result);
+            this.cenarioInput.compilado = result.data.compilado
+            this.$q.notify(result.notificacao);
           })
           .catch((err: any) => {
-            this.$q.notify(err);
+            this.$q.notify(err.notificacao);
           })
           .finally(() => {
             this.$q.loading.hide();
