@@ -99,7 +99,6 @@ export default class TemplateList extends Vue {
         this.$q.notify(result)
       })
       .catch((err: any) => this.$q.notify(err))
-      .finally(() => this.$router.push({ path: `template` }));
   }
 
   editarMapeamento(row: any) {

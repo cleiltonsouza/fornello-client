@@ -9,30 +9,33 @@
     </div>
     <div class="q-pa-md q-gutter-sm">
       <q-card class="my-card ">
-        <q-card-section>
-          <div class="text-h6">Atualizar Template</div>
-          <div class="text-subtitle2">{{dataInput.nome}}</div>
-        </q-card-section>
-        <div class="q-gutter-md col-12">
-          <div class="q-pa-md row">
-            <q-input class="col-2 q-mr-sm" outlined label="API" v-model="dataInput.api" />
-            <q-input class="col-2 q-mr-sm" outlined label="Version" v-model="dataInput.version" />
-            <q-input class="col-2 q-mr-sm" outlined label="Endpoint" v-model="dataInput.endpoint" />
-            <q-select class="col-2 q-mr-sm" outlined v-model="dataInput.method"
-              :options="['POST', 'GET', 'PUT', 'DELETE', 'PATCH']" label="Method" />
-            <q-select class="col-2" outlined v-model="dataInput.location" :options="['RESPONSE', 'REQUEST']"
-              label="Location" />
+        <q-form @submit="updateTempĺate()">
+          <q-card-section>
+            <div class="text-h6">Atualizar Template</div>
+            <div class="text-subtitle2">{{dataInput.nome}}</div>
+          </q-card-section>
+          <div class="q-gutter-md col-12">
+            <div class="q-pa-md row">
+              <custom-input label="API" :required="true" v-model="dataInput.api" />
+              <custom-input label="Version" :required="true" v-model="dataInput.version" />
+              <custom-input label="Endpoint" :required="true" v-model="dataInput.endpoint" />
+              <custom-select label="Method" :options="['POST', 'GET', 'PUT', 'DELETE', 'PATCH']" :required="true"
+                v-model="dataInput.method" />
+              <custom-select label="Location" :options="['RESPONSE', 'REQUEST']" :required="true"
+                v-model="dataInput.location" />
+            </div>
           </div>
-        </div>
-        <q-card-section>
-          <v-jsoneditor v-model="dataInput.template" :options="options" height="500px" @error="onError">
-          </v-jsoneditor>
-        </q-card-section>
-        <q-card-actions class="q-pl-md">
-          <q-btn color="primary" @click="atualizar()">
-            <strong>Atualizar</strong>
-          </q-btn>
-        </q-card-actions>
+          <q-card-section>
+            <v-jsoneditor v-model="dataInput.template" :options="options" height="500px" @error="onError">
+            </v-jsoneditor>
+          </q-card-section>
+          <q-card-actions class="q-pl-md">
+            <q-btn color="primary" type="submit">
+              <strong>Atualizar</strong>
+            </q-btn>
+            <q-btn icon="arrow_back" label="Voltar" flat @click="navigateBack()" />
+          </q-card-actions>
+        </q-form>
       </q-card>
     </div>
   </div>
@@ -40,18 +43,19 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import CustomInput from './components/CustomInput.vue'
+import CustomSelect from './components/CustomSelect.vue'
 import { TemplateService } from "../../services/TemplateService";
 import VJsoneditor from 'v-jsoneditor/src/index'
 @Component(
   {
-    components: { VJsoneditor }
+    components: { VJsoneditor, CustomInput, CustomSelect }
   })
 export default class TemplateEdit extends Vue {
   dataInput: any = {};
   dataOutput: any = {};
   templateId: string = "";
   options: any = {
-    type: Object,
     mode: 'code'
   }
 
@@ -60,7 +64,7 @@ export default class TemplateEdit extends Vue {
     console.log("error de json");
   }
 
-  recuperaPorId(templateId: string) {
+  findTemplateById(templateId: string) {
     this._templateService
       .recuperaPorId(templateId)
       .then((result) => this.dataInput = result)
@@ -68,7 +72,7 @@ export default class TemplateEdit extends Vue {
       .finally(() => this.$q.loading.hide());
   }
 
-  atualizar() {
+  updateTempĺate() {
     this._templateService
       .atualizar(this.templateId, this.dataInput)
       .then((result) => this.$q.notify(result))
@@ -79,7 +83,11 @@ export default class TemplateEdit extends Vue {
   created() {
     this._templateService = new TemplateService();
     this.templateId = this.$route.params.templateId;
-    this.recuperaPorId(this.templateId);
+    this.findTemplateById(this.templateId);
+  }
+
+  navigateBack() {
+    this.$router.back();
   }
 }
 </script>
