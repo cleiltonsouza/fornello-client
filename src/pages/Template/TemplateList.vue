@@ -7,11 +7,11 @@
       </q-breadcrumbs>
     </div>
     <div class="q-pa-md">
-      <q-table title="Templates" :data="data" :columns="colunas" :loading="loading" row-key="_id" rowsPerPage="15"
-        color="primary">
+      <q-table title="Templates" :data="data" :columns="colunas" :loading="loading" row-key="_id" color="primary"
+        :pagination="{rowsPerPage:30}">
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
-           <q-btn dense round flat color="primary" @click="editarMapeamento(props)" icon="map">
+            <q-btn dense round flat color="primary" @click="editarMapeamento(props)" icon="map">
               <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                 <strong>Mapeamento</strong>
               </q-tooltip>
