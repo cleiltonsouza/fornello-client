@@ -19,13 +19,13 @@
 
           <div class="q-gutter-md col-12">
             <div class="q-pa-md row">
-              <custom-input label="API" :required="true" v-model="dataInput.api" />
-              <custom-input label="Version" :required="true" v-model="dataInput.version" />
-              <custom-input label="Endpoint" :required="true" v-model="dataInput.endpoint" />
+              <custom-input label="API" :required="true" v-model="template.api" />
+              <custom-input label="Version" :required="true" v-model="template.version" />
+              <custom-input label="Endpoint" :required="true" v-model="template.endpoint" />
               <custom-select label="Method" :options="['POST', 'GET', 'PUT', 'DELETE', 'PATCH']" :required="true"
-                v-model="dataInput.method" />
+                v-model="template.method" />
               <custom-select label="Location" :options="['RESPONSE', 'REQUEST']" :required="true"
-                v-model="dataInput.location" />
+                v-model="template.location" />
             </div>
           </div>
           <q-card-section>
