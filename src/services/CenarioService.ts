@@ -8,6 +8,8 @@ export class CenarioService {
 
 
     public async adicionar(cenario: any) {
+        let resposta : any= {notificacao: "", data: {}}
+
         let parameters: IHttpClientRequestParameters
             = {
                 url: "http://localhost:3000/cenario",
@@ -18,11 +20,14 @@ export class CenarioService {
         try {
             let result = await HttpClient.post(parameters);
             let notify = result.status == HttpStatusCode.CREATED ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
+            resposta.notificacao = notify;
+            resposta.data = result.data.data;
 
-            return notify;
         } catch (error) {
-            return NotifyHelper.erro(error)
+            resposta.notificacao = NotifyHelper.erro(error)
         }
+
+        return resposta;
     }
 
     public async listar() {
@@ -40,23 +45,26 @@ export class CenarioService {
         }
     }
 
-    public async atualizar(cenarioId:string, cenario: any) {
+    public async atualizar(cenarioId:string, cenario: any) : Promise<any>{
+
+        let resposta : any= {notificacao: "", data: {}}
         let parameters: IHttpClientRequestParameters
             = {
               url: `http://localhost:3000/cenario/${cenarioId}`,
-
-
             requiresToken: true,
             payload: cenario
         }
         try {
             let result = await HttpClient.put(parameters);
             let notify = result.status == HttpStatusCode.OK ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
+            resposta.notificacao = notify;
+            resposta.data = result.data.data;
 
-            return notify;
         } catch (error) {
-            return NotifyHelper.erro(error)
+            resposta.notificacao = NotifyHelper.erro(error)
         }
+
+        return resposta;
     }
 
     public async recuperaPorId(cenarioId : string){
