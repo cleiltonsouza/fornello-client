@@ -4,6 +4,7 @@ import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestPar
 import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel"
 import HttpStatusCode from "src/helpers/HttpStatusCode";
+import HttpConfig from "src/config/HttpConfig";
 export class CenarioService {
 
 
@@ -12,7 +13,7 @@ export class CenarioService {
 
         let parameters: IHttpClientRequestParameters
             = {
-                url: "http://localhost:3000/cenario",
+                url: `${HttpConfig.UriApi()}/cenario`,
 
             requiresToken: false,
             payload: cenario
@@ -33,7 +34,7 @@ export class CenarioService {
     public async listar() {
         let parameters: IHttpClientRequestParameters
             = {
-            url: "http://localhost:3000/cenario",
+            url: `${HttpConfig.UriApi()}/cenario`,
             requiresToken: false
         }
         try {
@@ -41,7 +42,8 @@ export class CenarioService {
             console.log(result)
             return result.data.data;
         } catch (error) {
-            return null
+            return NotifyHelper.erro(error)
+
         }
     }
 
@@ -50,7 +52,7 @@ export class CenarioService {
         let resposta : any= {notificacao: "", data: {}}
         let parameters: IHttpClientRequestParameters
             = {
-              url: `http://localhost:3000/cenario/${cenarioId}`,
+              url: `${HttpConfig.UriApi()}/cenario/${cenarioId}`,
             requiresToken: true,
             payload: cenario
         }
@@ -72,7 +74,7 @@ export class CenarioService {
 
         let parameters: IHttpClientRequestParameters
             = {
-                url: `http://localhost:3000/cenario/${cenarioId}`,
+                url: `${HttpConfig.UriApi()}/cenario/${cenarioId}`,
             requiresToken: true
         }
         try {
@@ -80,7 +82,8 @@ export class CenarioService {
             return result.data.data;
 
         } catch (error) {
-            return null
+            return NotifyHelper.erro(error)
+
         }
         
     }
@@ -89,7 +92,7 @@ export class CenarioService {
     public async excluir(cenarioId : number){
         let parameters: IHttpClientRequestParameters
             = {
-            url: `http://localhost:3000/cenario/${cenarioId}`,
+            url: `${HttpConfig.UriApi()}/cenario/${cenarioId}`,
             requiresToken: true,
         }
         try {

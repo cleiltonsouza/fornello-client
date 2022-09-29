@@ -3,12 +3,13 @@ import { HttpClient } from "./HttpClientService";
 import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestParameters";
 import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel";
+import HttpConfig from "src/config/HttpConfig";
 
 export class TemplateService {
 
     public async adicionar(template: any) {
         let parameters: IHttpClientRequestParameters = {
-            url: "http://localhost:3000/template",
+            url: `${HttpConfig.UriApi()}/template`,
             requiresToken: false,
             payload: template
         }
@@ -23,20 +24,21 @@ export class TemplateService {
 
     public async listar() {
         let parameters: IHttpClientRequestParameters = {
-            url: "http://localhost:3000/template",
+            url: `${HttpConfig.UriApi()}/template`,
             requiresToken: false
         }
         try {
             let result = await HttpClient.get(parameters);
             return result.data.data
         } catch (error) {
-            return null
+            return NotifyHelper.erro(error)
+
         }
     }
 
     public async atualizar(templateId: string, template: _modelsInput.Template) {
         let parameters: IHttpClientRequestParameters = {
-            url: `http://localhost:3000/template/${templateId}`,
+            url: `${HttpConfig.UriApi()}/template/${templateId}`,
             requiresToken: true,
             payload: template
         }
@@ -51,7 +53,7 @@ export class TemplateService {
 
     public async recuperaPorId(templateId: string) {
         let parameters: IHttpClientRequestParameters = {
-            url: `http://localhost:3000/template/${templateId}`,
+            url: `${HttpConfig.UriApi()}/template/${templateId}`,
             requiresToken: true
         }
         try {
@@ -59,13 +61,14 @@ export class TemplateService {
             return result.data.template;
 
         } catch (error) {
-            return null
+            return NotifyHelper.erro(error)
+
         }
     }
 
     public async excluir(templateId: string) {
         let parameters: IHttpClientRequestParameters = {
-            url: `http://localhost:3000/template/${templateId}`,
+            url: `${HttpConfig.UriApi()}/template/${templateId}`,
             requiresToken: true,
         }
         try {
