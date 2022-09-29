@@ -1,5 +1,5 @@
 {
 
-    "api":"http://localhost:3000"
-
+    "apiDev":"http://localhost:3000",
+    "apiProd":"http://localhost:3000"
 }

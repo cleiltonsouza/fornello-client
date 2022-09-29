@@ -5,6 +5,7 @@ import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel"
 import { STATUS_CODES } from "http";
 import HttpStatusCode from "src/helpers/HttpStatusCode";
+import HttpConfig from "src/config/HttpConfig";
 export class PersonaService {
 
 
@@ -17,7 +18,7 @@ export class PersonaService {
 
         let parameters: IHttpClientRequestParameters
             = {
-                url: "http://localhost:3000/persona",
+                url: `${HttpConfig.UriApi()}/persona`,
 
             requiresToken: false,
             payload: persona
@@ -35,7 +36,7 @@ export class PersonaService {
     public async listar() {
         let parameters: IHttpClientRequestParameters
             = {
-            url: "http://localhost:3000/persona",
+            url: `${HttpConfig.UriApi()}/persona`,
             requiresToken: false
         }
         try {
@@ -43,7 +44,8 @@ export class PersonaService {
             console.log(result)
             return result.data.data;
         } catch (error) {
-            return null
+            return NotifyHelper.erro(error)
+
         }
     }
 
@@ -54,7 +56,7 @@ export class PersonaService {
         }
         let parameters: IHttpClientRequestParameters
             = {
-              url: `http://localhost:3000/persona/${personaId}`,
+              url: `${HttpConfig.UriApi()}/persona/${personaId}`,
 
 
             requiresToken: true,
@@ -76,7 +78,7 @@ export class PersonaService {
 
         let parameters: IHttpClientRequestParameters
             = {
-                url: `http://localhost:3000/persona/${personaId}`,
+                url: `${HttpConfig.UriApi()}/persona/${personaId}`,
             requiresToken: true
         }
         try {
@@ -84,26 +86,8 @@ export class PersonaService {
             return result.data.data;
 
         } catch (error) {
-            return null
+            return NotifyHelper.erro(error)
         }
         
     }
-
-
-    // public async excluir(idConteudo : number){
-    //     let parameters: IHttpClientRequestParameters
-    //         = {
-    //         url: Config.api + `/api/conteudo/${idConteudo}`,
-    //         requiresToken: true,
-    //     }
-    //     try {
-    //         let result = await HttpClient.delete(parameters);
-    //         let notify = result.ok ? NotifyHelper.sucesso() : NotifyHelper.erro(result.error);
-        
-    //         return notify;
-    //     } catch (error) {
-    //         return NotifyHelper.erro(error)
-    //     }
-    // }
-
 }

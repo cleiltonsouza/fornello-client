@@ -3,6 +3,7 @@ import { HttpClient } from "./HttpClientService";
 import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestParameters";
 import NotifyHelper from "src/helpers/NotifyHelpter";
 import { _helperModel } from "../helpers/_helperModel"
+import HttpConfig from "src/config/HttpConfig";
 export class PersonaTemplateService {
 
     public async recuperaTemplate(){
@@ -10,7 +11,7 @@ export class PersonaTemplateService {
 
         let parameters: IHttpClientRequestParameters
             = {
-                url: `http://localhost:3000/persona-template/template`,
+                url: `${HttpConfig.UriApi()}/persona-template/template`,
             requiresToken: true
         }
         try {
@@ -18,7 +19,8 @@ export class PersonaTemplateService {
             return result.data.data;
 
         } catch (error) {
-            return null
+            return NotifyHelper.erro(error)
+
         }
     }
 }
