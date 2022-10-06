@@ -9,6 +9,11 @@
     <div class="q-pa-md">
       <q-table title="Templates" :data="data" :columns="colunas" :loading="loading" row-key="_id" color="primary"
         :pagination="{rowsPerPage:30}">
+        <template v-slot:body-template="props">
+        <q-td :props="props">
+          <descricao-template-component :template="props.row.row"/>
+        </q-td>
+      </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
             <q-btn dense round flat color="primary" @click="editarMapeamento(props)" icon="map">
@@ -43,8 +48,10 @@
 <script lang="ts">
 import { _helperConstants } from "src/helpers/_helperConstants";
 import { Component, Vue } from "vue-property-decorator";
+import DescricaoTemplateComponent from "../../components/DescricaoTemplate.vue";
 import { TemplateService } from "../../services/TemplateService";
-@Component
+@Component({ components: {  DescricaoTemplateComponent } })
+
 export default class TemplateList extends Vue {
   data: any[] = [];
   loading: boolean = true;

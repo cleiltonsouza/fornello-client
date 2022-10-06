@@ -17,6 +17,7 @@
         color="primary"
         :pagination.sync="pagination"
       >
+   
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
             <q-btn
@@ -42,7 +43,7 @@
               flat
               color="primary"
               @click="visualizarCompilado(props)"
-              icon="edit"
+              icon="visibility"
             >
               <q-tooltip
                 anchor="top middle"
@@ -75,9 +76,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import DescricaoTemplateComponent from "../../components/DescricaoTemplate.vue";
 import { CenarioService } from "../../services/CenarioService";
 import DialogVisualizarCompilado from "./components/DialogVisualizarCompilado.vue";
-@Component({ components: { DialogVisualizarCompilado } })
+
+@Component({ components: { DialogVisualizarCompilado, DescricaoTemplateComponent } })
 export default class CenarioList extends Vue {
   data: any[] = [];
   loading: boolean = true;
@@ -87,12 +90,7 @@ export default class CenarioList extends Vue {
   private _cenarioService!: CenarioService;
 
   colunas: Array<object> = [
-    {
-      field: "cenarioId",
-      label: "Id",
-      nome: "cenarioId",
-      align: "left",
-    },
+   
     {
       field: "descricao",
       label: "Descrição",

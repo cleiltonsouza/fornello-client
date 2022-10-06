@@ -5,8 +5,7 @@ const routes: RouteConfig[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
-      ,{
+      {
         path: 'persona',
         name: 'persona',
         component: () => import('pages/Persona/PersonaList.vue')
@@ -33,6 +32,10 @@ const routes: RouteConfig[] = [
         component: () => import('pages/Cenario/CenarioEdit.vue')
       },{
         path: 'cenario',
+        name: 'cenario',
+        component: () => import('pages/Cenario/CenarioList.vue')
+      },{
+        path: '',
         name: 'cenario',
         component: () => import('pages/Cenario/CenarioList.vue')
       },
