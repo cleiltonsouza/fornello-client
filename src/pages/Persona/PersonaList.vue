@@ -64,13 +64,6 @@ export default class PersonaList extends Vue {
 
   colunas: Array<object> = [
     {
-      field: "personaId",
-      label: "Id",
-      nome: "personaId",
-      align: "left",
-
-    },
-    {
       field: "nome",
       label: "Nome",
       nome: "nome",

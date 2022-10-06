@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Sensedia - Gerador de Massa - OpenFinance
+          Sensedia - Fornello
         </q-toolbar-title>
 
         <div>v 1.0.0</div>
@@ -30,7 +30,7 @@
           header
           class="text-grey-8"
         >
-          Gerador de massa
+        Fornello
         </q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -53,13 +53,6 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
   
-  
-  {
-    title: 'Home',
-    caption: '',
-    icon: 'home',
-    link: '/#/'
-  },
     {
     title: 'Persona',
     caption: '',
