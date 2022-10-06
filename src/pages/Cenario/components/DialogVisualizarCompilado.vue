@@ -45,9 +45,6 @@ export default class DialogVisualizarCompilado extends Vue{
   }
   compiladoOutput : any = {}
 
-  @Prop()
-	readonly compilado!: any;
-
 
     show(compilado: any){
       this.compiladoOutput = compilado;
