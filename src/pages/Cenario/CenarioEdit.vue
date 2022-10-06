@@ -98,8 +98,8 @@ import { PersonaService } from "../../services/PersonaService";
 import  RecuperaObjetoPorString  from "../../helpers/RecuperaObjetoPorString";
 import CenarioMapeamentoTemplatePersonaComponent from "./components/CenarioMapeamentoTemplatePersonaComponent.vue";
 import DialogVisualizarCompilado from "./components/DialogVisualizarCompilado.vue"
-@Component({ components: { CenarioMapeamentoTemplatePersonaComponent, DialogVisualizarCompilado } })
 
+@Component({ components: { CenarioMapeamentoTemplatePersonaComponent, DialogVisualizarCompilado } })
 export default class CenarioEdit extends Vue {
   cenarioId : string = "";
   mapeamentoId: string = "";
@@ -131,7 +131,7 @@ export default class CenarioEdit extends Vue {
   personas: any[] = [];
 
   visualizarCompilado(){
-    (this.$refs.dialogVisualizarCompilado as Vue & { show(any): boolean }).show(this.cenarioInput.compilado);
+    (this.$refs.dialogVisualizarCompilado as Vue & { show(any:any): boolean }).show(this.cenarioInput.compilado);
 
   }
 
@@ -258,7 +258,7 @@ export default class CenarioEdit extends Vue {
 
   montaValueDoMapeamentoPorPersona(){
     if(this.cenarioInput.persona && this.cenarioInput.mapeamentoId){
-    this.cenarioInput.mapeamentoTemplatePersonaCenarioItens.forEach(x=>{
+    this.cenarioInput.mapeamentoTemplatePersonaCenarioItens?.forEach(x=>{
       
       if(x.value == undefined && x.mapeamentoItem.pathPersona){
         x.value = RecuperaObjetoPorString.recuperar(this.cenarioInput.persona, x.mapeamentoItem.pathPersona);
