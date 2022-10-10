@@ -7,13 +7,9 @@
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
         <q-card-section class="q-gutter-md">
-         <v-jsoneditor
-            v-model="compiladoOutput"
-            :options="options"
-            height="500px"
 
-          >
-          </v-jsoneditor>
+          <vue-json-pretty :data="compiladoOutput" />
+        
           
         </q-card-section>
         <q-card-actions align="right" class="bg-white text-teal">
@@ -30,11 +26,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator"
-import VJsoneditor from 'v-jsoneditor/src/index'
-
+import VueJsonPretty from 'vue-json-pretty';
+import 'vue-json-pretty/lib/styles.css';
 @Component(
   {
-    components:{VJsoneditor}
+    components:{VueJsonPretty}
 })
 export default class DialogVisualizarCompilado extends Vue{
 
