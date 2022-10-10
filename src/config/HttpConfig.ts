@@ -5,7 +5,7 @@ export default class HttpConfig{
         let uri = "http://localhost:3000";
 
         if(!process.env.DEV){
-            uri = ""
+            uri = "https://fornello.herokuapp.com"
         }
         return uri;
     }
