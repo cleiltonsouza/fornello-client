@@ -19,7 +19,7 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
     // Leave these as is and change from quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
-    mode: process.env.VUE_ROUTER_MODE,
+    mode: "history",
     base: "/fornello-client/"
    // base: process.env.VUE_ROUTER_BASE
   });
