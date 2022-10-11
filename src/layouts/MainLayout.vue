@@ -57,7 +57,7 @@ const linksData = [
     title: 'Persona',
     caption: '',
     icon: 'school',
-    link: 'Persona' 
+    link: '#/Persona' 
   },
   {
     title: 'Template',
@@ -68,7 +68,7 @@ const linksData = [
     title: 'Cenário',
     caption: '',
     icon: 'perm_identity',
-    link: 'Cenario'
+    link: '#/Cenario'
   }
 ];
 
