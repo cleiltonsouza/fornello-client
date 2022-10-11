@@ -57,18 +57,18 @@ const linksData = [
     title: 'Persona',
     caption: '',
     icon: 'school',
-    link: '/Persona' 
+    link: 'Persona' 
   },
   {
     title: 'Template',
     caption: '',
     icon: 'settings',
-    link: '/#/Template'
+    link: 'Template'
   },{
     title: 'Cenário',
     caption: '',
     icon: 'perm_identity',
-    link: '/#/Cenario'
+    link: 'Cenario'
   }
 ];
 
