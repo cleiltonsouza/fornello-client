@@ -48,7 +48,7 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
-      // publicPath:  process.env.DEV === true ? "/" : "fornello-client",
+      publicPath:  process.env.DEV === true ? "/" : "/fornello-client/",
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
