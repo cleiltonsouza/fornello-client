@@ -63,7 +63,7 @@ const linksData = [
     title: 'Template',
     caption: '',
     icon: 'settings',
-    link: 'Template'
+    link: '#/Template'
   },{
     title: 'Cenário',
     caption: '',
